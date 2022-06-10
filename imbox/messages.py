@@ -36,7 +36,7 @@ class Messages:
         self.parser_policy = parser_policy
         self.reverse = reverse
         self.kwargs = kwargs
-        self._uid_list = reversed(self._query_uids(**kwargs)) if self.reverse else self._query_uids(**kwargs)
+        self._uid_list = self._query_uids(**kwargs)
 
         logger.debug(f"Fetch all messages for UID in {self._uid_list}")
 
@@ -53,8 +53,12 @@ class Messages:
         return data[0].split()
 
     def _fetch_email_list(self):
-        for uid in self._uid_list:
-            yield uid, self._fetch_email(uid)
+        if self.reverse:
+            for uid in reversed(self._uid_list):
+                yield uid, self._fetch_email(uid)
+        else:
+            for uid in self._uid_list:
+                yield uid, self._fetch_email(uid)
 
     def __repr__(self):
         if len(self.kwargs) > 0:
@@ -72,7 +76,10 @@ class Messages:
         return len(self._uid_list)
 
     def __getitem__(self, index):
-        uids = self._uid_list[index]
+        if self.reverse:
+            uids = reversed(self._uid_list)[index]
+        else:
+            uids = self._uid_list[index]
 
         if not isinstance(uids, list):
             uid = uids
