@@ -9,7 +9,7 @@ class Messages:
     def __init__(self,
                  connection: Union[IMAP4, IMAP4_SSL],
                  parser_policy: Policy,
-                 reversed: bool,
+                 reverse: bool,
                  **kwargs: Union[bool, str, datetime.date]) -> None: ...
 
     def _fetch_email(self, uid: bytes) -> 'Struct': ...

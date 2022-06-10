@@ -29,15 +29,15 @@ class Messages:
     def __init__(self,
                  connection,
                  parser_policy,
-                 reversed,
+                 reverse=False,
                  **kwargs):
 
         self.connection = connection
         self.parser_policy = parser_policy
-        self.reversed = reversed
+        self.reverse = reverse
         self.kwargs = kwargs
-        self._uid_list = reversed(self._query_uids(**kwargs)) if self.reversed else self._query_uids(**kwargs)
-        
+        self._uid_list = reversed(self._query_uids(**kwargs)) if self.reverse else self._query_uids(**kwargs)
+
         logger.debug(f"Fetch all messages for UID in {self._uid_list}")
 
     def _fetch_email(self, uid):
